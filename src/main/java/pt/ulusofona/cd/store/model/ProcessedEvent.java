@@ -1,0 +1,34 @@
+package pt.ulusofona.cd.store.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.Instant;
+
+@Entity
+@Table(
+        name = "processed_events",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"reservation_id", "event_type"})
+)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProcessedEvent {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "reservation_id", nullable = false)
+    private Long reservationId;
+
+    @Column(name = "event_type", nullable = false, length = 80)
+    private String eventType;
+
+    @Column(name = "processed_at", nullable = false)
+    private Instant processedAt;
+}

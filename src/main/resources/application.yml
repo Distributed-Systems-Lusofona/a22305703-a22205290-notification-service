@@ -6,7 +6,7 @@ spring:
     name: ${APPLICATION_NAME}
 
   datasource:
-    url: jdbc:postgresql://${POSTGRES_DB}:5432/${POSTGRES_DB}
+    url: jdbc:postgresql://notification_db:5432/${POSTGRES_DB}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -18,30 +18,34 @@ spring:
         format_sql: true
 
   kafka:
+    consumer:
+      bootstrap-servers: kafka:9092
+      group-id: notification-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+
     producer:
       bootstrap-servers: kafka:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+    listener:
+      ack-mode: manual
 
-supplier:
-  events:
-    supplier-deactivated-events: supplier-deactivated-events
-
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 10000
-        loggerLevel: FULL
-  hystrix:
-    enabled: false
+kafka:
+  topics:
+    reservation-created: reservation.created
+    reservation-confirmed: reservation.confirmed
+    reservation-cancelled: reservation.cancelled
+    restaurant-notified: restaurant.notified
 
 logging:
   level:
-    pt.ulusofona.cd.store.shared.client: DEBUG
-    feign: DEBUG
+    org.springframework.kafka: INFO
 
 management:
   endpoints:

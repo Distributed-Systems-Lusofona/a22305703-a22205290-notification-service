@@ -1,5 +1,5 @@
 services:
-  supplier_db:
+  notification_db:
     image: postgres:17
     restart: always
     env_file: ".env"
@@ -16,12 +16,12 @@ services:
   flyway:
     image: flyway/flyway:11.12
     depends_on:
-      supplier_db:
+      notification_db:
         condition: service_healthy
     volumes:
       - ./migrations:/flyway/sql
     command: >
-      -url=jdbc:postgresql://$POSTGRES_DB:5432/$POSTGRES_DB
+      -url=jdbc:postgresql://notification_db:5432/$POSTGRES_DB
       -user=$POSTGRES_USER
       -password=$POSTGRES_PASSWORD
       migrate
@@ -29,16 +29,18 @@ services:
     networks:
       - store-network
 
-  supplier-service:
+  notification-service:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      supplier_db:
+      notification_db:
         condition: service_healthy
+      flyway:
+        condition: service_completed_successfully
     env_file: ".env"
     ports:
-      - "8082:8082"
+      - "8089:8089"
     volumes:
       - ./src:/app/src
       - ~/.m2:/root/.m2
@@ -47,7 +49,6 @@ services:
 
 volumes:
   db_data:
-  pgadmin_data:
 
 networks:
   store-network:

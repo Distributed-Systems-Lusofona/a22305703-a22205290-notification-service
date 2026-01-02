@@ -1,6 +1,6 @@
-# Supplier Service
+# Notification Service
 
-This repository contains the Supplier Service, one of the microservices in the Store Project —
+This repository contains the Notification Service, one of the microservices in the Store Project —
 a distributed system composed of multiple Spring Boot services that work together to manage an online store.
 
 Each microservice runs in its own container, communicating with others via REST APIs.
