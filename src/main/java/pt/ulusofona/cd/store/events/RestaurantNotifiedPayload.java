@@ -20,6 +20,9 @@ public class RestaurantNotifiedPayload {
     @JsonProperty("reservationId")
     private Long reservationId;
 
+    @JsonProperty("restaurantId")
+    private Long restaurantId;
+
     @JsonProperty("relatedEventType")
     private String relatedEventType;
 

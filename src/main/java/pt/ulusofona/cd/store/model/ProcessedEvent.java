@@ -22,6 +22,7 @@ public class ProcessedEvent {
 
 
     // Aqui o Id é a mesma coisa que o event key
+    //mas honestamente no futuro provavelmente trocamos para o mesmo
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

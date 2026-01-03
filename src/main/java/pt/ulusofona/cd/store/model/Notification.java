@@ -16,7 +16,8 @@ import java.time.Instant;
         indexes = {
                 @Index(name = "idx_notifications_reservation_id", columnList = "reservation_id"),
                 @Index(name = "idx_notifications_event_type", columnList = "event_type"),
-                @Index(name = "idx_notifications_status", columnList = "status")
+                @Index(name = "idx_notifications_status", columnList = "status"),
+                @Index(name = "idx_notifications_restaurant_id", columnList = "restaurant_id")
         }
 )
 @Getter
@@ -33,13 +34,18 @@ public class Notification {
     @Column(name = "reservation_id", nullable = false)
     private Long reservationId;
 
+    // NOVO
+    @NotNull
+    @Column(name = "restaurant_id", nullable = false)
+    private Long restaurantId;
+
     @NotBlank
     @Column(name = "event_type", nullable = false, length = 60)
-    private String eventType; // ex: "reservation.confirmed"
+    private String eventType;
 
     @NotBlank
     @Column(name = "recipient", nullable = false, length = 255)
-    private String recipient; // ex: email do restaurante/cliente
+    private String recipient;
 
     @NotNull
     @Enumerated(EnumType.STRING)

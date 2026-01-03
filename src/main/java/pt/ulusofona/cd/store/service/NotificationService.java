@@ -38,6 +38,11 @@ public class NotificationService {
             throw new IllegalArgumentException("reservationId is required in payload");
         }
 
+        Long restaurantId = payload.getRestaurantId();
+        if (restaurantId == null) {
+            throw new IllegalArgumentException("restaurantId is required in payload");
+        }
+
         if (processedEventRepository.existsByReservationIdAndEventType(reservationId, eventType)) {
             return;
         }
@@ -61,6 +66,7 @@ public class NotificationService {
 
         Notification n = new Notification();
         n.setReservationId(reservationId);
+        n.setRestaurantId(restaurantId);
         n.setEventType(eventType);
         n.setRecipient(recipient);
         n.setStatus(status);

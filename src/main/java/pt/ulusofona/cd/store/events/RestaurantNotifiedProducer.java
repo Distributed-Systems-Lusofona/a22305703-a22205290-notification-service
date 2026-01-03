@@ -27,6 +27,7 @@ public class RestaurantNotifiedProducer {
         RestaurantNotifiedPayload payload = new RestaurantNotifiedPayload(
                 notification.getId(),
                 notification.getReservationId(),
+                notification.getRestaurantId(),
                 relatedEventType,
                 notification.getRecipient()
         );
