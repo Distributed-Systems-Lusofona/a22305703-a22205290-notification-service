@@ -1,0 +1,63 @@
+server:
+  port: ${PORT}
+
+spring:
+  application:
+    name: ${APPLICATION_NAME}
+
+  datasource:
+    url: jdbc:postgresql://notification_db:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  kafka:
+    consumer:
+      bootstrap-servers: kafka:9092
+      group-id: notification-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+
+    producer:
+      bootstrap-servers: kafka:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    listener:
+      ack-mode: manual
+
+kafka:
+  topics:
+    reservation-created: reservation.created
+    reservation-confirmed: reservation.confirmed
+    reservation-cancelled: reservation.cancelled
+    restaurant-notified: restaurant.notified
+
+logging:
+  level:
+    org.springframework.kafka: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
