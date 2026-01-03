@@ -19,6 +19,9 @@ import java.time.Instant;
 @AllArgsConstructor
 public class ProcessedEvent {
 
+
+
+    // Aqui o Id é a mesma coisa que o event key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
