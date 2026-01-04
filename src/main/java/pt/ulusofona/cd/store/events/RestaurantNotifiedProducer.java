@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Service
 public class RestaurantNotifiedProducer {
-
+//aa
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Value("${kafka.topics.restaurant-notified}")
