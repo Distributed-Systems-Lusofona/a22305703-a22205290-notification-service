@@ -1,35 +1,37 @@
 server:
-  port: ${PORT}
+  port: ${SERVER_PORT:8089}
 
 spring:
   application:
-    name: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME:notification-service}
 
   datasource:
-    url: jdbc:postgresql://notification_db:5432/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://notification_db:5432/${POSTGRES_DB:notification_db}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
 
   kafka:
     consumer:
-      bootstrap-servers: kafka:9092
-      group-id: notification-service-group
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:notification-service-group}
+
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
       enable-auto-commit: false
-      auto-offset-reset: earliest
-      properties:
-        spring.json.trusted.packages: "*"
+      auto-offset-reset: latest
 
     producer:
-      bootstrap-servers: kafka:9092
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
